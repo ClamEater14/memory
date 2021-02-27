@@ -11,37 +11,34 @@ let inputImgs: Image[] = [
     assets.image`Right`
 ]
 
-let inputTypes: (controller.Button)[] = [
-    controller.A,
-    controller.B,
-    controller.up,
-    controller.down,
-    controller.left,
-    controller.right
-]
-
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-	addAndCheckPlayerInput(0)
+    if (controller.A.isPressed())
+        addAndCheckPlayerInput(0)
 })
 
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-	addAndCheckPlayerInput(1)
+    if (controller.B.isPressed())
+	    addAndCheckPlayerInput(1)
 })
 
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-	addAndCheckPlayerInput(2)
+    if (controller.up.isPressed())
+	    addAndCheckPlayerInput(2)
 })
 
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-	addAndCheckPlayerInput(3)
+    if (controller.down.isPressed())
+	    addAndCheckPlayerInput(3)
 })
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (controller.left.isPressed())
 	addAndCheckPlayerInput(4)
 })
 
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-	addAndCheckPlayerInput(5)
+    if (controller.right.isPressed())
+	    addAndCheckPlayerInput(5)
 })
 
 function displayText(text: string, color: number = 0) {
@@ -51,7 +48,8 @@ function displayText(text: string, color: number = 0) {
 }
 
 function addAndCheckPlayerInput (inputType: number) {
-	if (playerTurn) {
+	if (playerTurn == true) {
+        playerTurn = false
         let correctInput = sequence[currentSequenceIndex]
 
         inputSprite.setImage(inputImgs[inputType])
@@ -60,7 +58,6 @@ function addAndCheckPlayerInput (inputType: number) {
             currentSequenceIndex++
 
             if (currentSequenceIndex == sequenceSize) {
-                playerTurn = false
                 info.changeScoreBy(1)
                 displayText("Nice job!", 7)
                 music.magicWand.playUntilDone()
@@ -68,6 +65,7 @@ function addAndCheckPlayerInput (inputType: number) {
                 sequenceSize++
                 beginNextRound()
             }
+            playerTurn = true
         }
         else {
             displayText("Wrong!", 2)
@@ -82,7 +80,6 @@ function addAndCheckPlayerInput (inputType: number) {
 }
 
 function beginNextRound () {
-    playerTurn = false
     currentSequenceIndex = 0
     sequence = []
     inputSprite.setImage(assets.image`QuestionMark`)
@@ -91,8 +88,7 @@ function beginNextRound () {
     pause(1000)
 
     for (let index = 0; index < sequenceSize; index++) {
-        let chosenInputIndex: number = randint(0, inputTypes.length - 1)
-        let chosenInput: controller.Button = inputTypes[chosenInputIndex]
+        let chosenInputIndex: number = randint(0, inputImgs.length - 1)
         let chosenInputImg: Image = inputImgs[chosenInputIndex]
         sequence.push(chosenInputIndex)
         inputSprite.setImage(chosenInputImg)
