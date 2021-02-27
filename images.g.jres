@@ -29,6 +29,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "B"
     },
+    "image7": {
+        "data": "hwQQABAAAAAAVVVVAAAAAABVVVUAAAAAVQAAAAAAAABVAAAAAAAAAFUAAAAAAAAAVQAAAAAAAABVAAAAVVUFVVUAAABVVQVVVQAAAFUAAABVAAAAVQAAAFUAAABVAAAAVQAAAFUAAABVAAAAVQAAAFUAAABVAAAAAFVVVQAAAAAAVVVVAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "QuestionMark"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",
