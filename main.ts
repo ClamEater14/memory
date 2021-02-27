@@ -97,6 +97,7 @@ function beginNextRound () {
     }
 
     pause(500)
+    displayText("Repeat the pattern!")
     inputSprite.setImage(assets.image`QuestionMark`)
     playerTurn = true
 }
@@ -108,11 +109,11 @@ let sequenceSize: number = 1
 let currentSequenceIndex = 0
 let sequence: number[] = []
 
-let gameText: TextSprite = textsprite.create("???")
-gameText.setPosition(80, 30)
+let gameText: TextSprite = textsprite.create("")
 
 let inputSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Prop)
 
 info.setScore(0)
+game.showLongText("Watch the pattern and memorize it!\nRepeat it using buttons!", DialogLayout.Full)
 beginNextRound()
  
