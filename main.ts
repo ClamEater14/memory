@@ -13,32 +13,44 @@ let inputImgs: Image[] = [
 
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.A.isPressed())
+    {
         addAndCheckPlayerInput(0)
+    } 
 })
 
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed())
-	    addAndCheckPlayerInput(1)
+    {
+        addAndCheckPlayerInput(1)
+    }   
 })
 
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed())
-	    addAndCheckPlayerInput(2)
+    {
+        addAndCheckPlayerInput(2)
+    }  
 })
 
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.down.isPressed())
-	    addAndCheckPlayerInput(3)
+    {
+        addAndCheckPlayerInput(3)
+    }
 })
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.left.isPressed())
-	addAndCheckPlayerInput(4)
+    {
+        addAndCheckPlayerInput(4)
+    }  
 })
 
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.right.isPressed())
-	    addAndCheckPlayerInput(5)
+    {
+        addAndCheckPlayerInput(5)
+    }  
 })
 
 function displayText(text: string, color: number = 0) {
@@ -49,7 +61,6 @@ function displayText(text: string, color: number = 0) {
 
 function addAndCheckPlayerInput (inputType: number) {
 	if (playerTurn == true) {
-        playerTurn = false
         let correctInput = sequence[currentSequenceIndex]
 
         inputSprite.setImage(inputImgs[inputType])
@@ -58,6 +69,7 @@ function addAndCheckPlayerInput (inputType: number) {
             currentSequenceIndex++
 
             if (currentSequenceIndex == sequenceSize) {
+                playerTurn = false
                 info.changeScoreBy(1)
                 displayText("Nice job!", 7)
                 music.magicWand.playUntilDone()
@@ -65,7 +77,6 @@ function addAndCheckPlayerInput (inputType: number) {
                 sequenceSize++
                 beginNextRound()
             }
-            playerTurn = true
         }
         else {
             displayText("Wrong!", 2)
@@ -83,6 +94,7 @@ function beginNextRound () {
     currentSequenceIndex = 0
     sequence = []
     inputSprite.setImage(assets.image`QuestionMark`)
+    playerTurn = false
     displayText("Watch & remember!")
     gameText.setPosition(80, 30)
     pause(1000)
@@ -92,11 +104,15 @@ function beginNextRound () {
         let chosenInputImg: Image = inputImgs[chosenInputIndex]
         sequence.push(chosenInputIndex)
         inputSprite.setImage(chosenInputImg)
+        inputSprite.setFlag(SpriteFlag.Invisible, false)
         music.zapped.play()
-        pause(750)
+        pause(500)
+        inputSprite.setFlag(SpriteFlag.Invisible, true)
+        pause(250)
     }
 
     pause(500)
+    inputSprite.setFlag(SpriteFlag.Invisible, false)
     displayText("Repeat the pattern!")
     inputSprite.setImage(assets.image`QuestionMark`)
     playerTurn = true
