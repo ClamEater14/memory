@@ -79,6 +79,7 @@ function addAndCheckPlayerInput (inputType: number) {
             }
         }
         else {
+            playerTurn = false
             displayText("Wrong!", 2)
             music.buzzer.playUntilDone()
             pause(1000)
