@@ -85,7 +85,11 @@ function addAndCheckPlayerInput (inputType: number) {
             displayText("The correct one is...", 2)
             inputSprite.setImage(inputImgs[correctInput])
             pause(2000)
-            game.over(false)
+
+            // If you break the record, you win!
+            // Otherwise, you lose!
+            // You can do this with an "if" statement as well.
+            game.over(info.score() >= info.highScore())
         }
     }
 }
