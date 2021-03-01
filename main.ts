@@ -53,6 +53,36 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     }  
 })
 
+function correct() {
+    music.baDing.play()
+    currentSequenceIndex++
+
+    if (currentSequenceIndex == sequenceSize) {
+        playerTurn = false
+        info.changeScoreBy(1)
+        displayText("Nice job!", 7)
+        music.magicWand.playUntilDone()
+        pause(1000)
+        sequenceSize++
+        beginNextRound()
+    }
+}
+
+function wrong(correctInput: number) {
+    playerTurn = false
+    displayText("Wrong!", 2)
+    music.buzzer.playUntilDone()
+    pause(1000)
+    displayText("The correct one is...", 2)
+    inputSprite.setImage(inputImgs[correctInput])
+    pause(2000)
+
+    // If you break the record, you win!
+    // Otherwise, you lose!
+    // You can do this with an "if" statement as well.
+    game.over(info.score() >= info.highScore())
+}
+
 function displayText(text: string, color: number = 0) {
     gameText.setText(text)
     gameText.setOutline(1, color)
@@ -65,32 +95,10 @@ function addAndCheckPlayerInput (inputType: number) {
 
         inputSprite.setImage(inputImgs[inputType])
         if (inputType == correctInput) {
-            music.baDing.play()
-            currentSequenceIndex++
-
-            if (currentSequenceIndex == sequenceSize) {
-                playerTurn = false
-                info.changeScoreBy(1)
-                displayText("Nice job!", 7)
-                music.magicWand.playUntilDone()
-                pause(1000)
-                sequenceSize++
-                beginNextRound()
-            }
+            correct()
         }
         else {
-            playerTurn = false
-            displayText("Wrong!", 2)
-            music.buzzer.playUntilDone()
-            pause(1000)
-            displayText("The correct one is...", 2)
-            inputSprite.setImage(inputImgs[correctInput])
-            pause(2000)
-
-            // If you break the record, you win!
-            // Otherwise, you lose!
-            // You can do this with an "if" statement as well.
-            game.over(info.score() >= info.highScore())
+            wrong(correctInput)
         }
     }
 }
@@ -127,7 +135,7 @@ let playerTurn: boolean = false
 
 let sequenceSize: number = 1
 
-let currentSequenceIndex = 0
+let currentSequenceIndex: number = 0
 let sequence: number[] = []
 
 let gameText: TextSprite = textsprite.create("")
