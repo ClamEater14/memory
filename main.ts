@@ -58,13 +58,12 @@ function correct() {
     currentSequenceIndex++
 
     // if you have reached to the end of the sequence, switch to the next round
-    if (currentSequenceIndex == sequenceSize) {
+    if (currentSequenceIndex == sequence.length) {
         playerTurn = false
         info.changeScoreBy(1)
         displayText("Nice job!", Colors.Green)
         music.magicWand.playUntilDone()
         pause(1000)
-        sequenceSize++
         beginNextRound()
     }
 }
@@ -106,17 +105,20 @@ function addAndCheckPlayerInput (inputType: number) {
 
 function beginNextRound () {
     currentSequenceIndex = 0
-    sequence = []
     inputSprite.setImage(assets.image`QuestionMark`)
     playerTurn = false
+
+    let chosenInputIndex: number = randint(0, inputImgs.length - 1)
+    let chosenInputImg: Image = inputImgs[chosenInputIndex]
+    sequence.push(chosenInputIndex)
+
     displayText("Watch & remember!")
     pause(1000)
 
-    for (let index = 0; index < sequenceSize; index++) {
-        let chosenInputIndex: number = randint(0, inputImgs.length - 1)
-        let chosenInputImg: Image = inputImgs[chosenInputIndex]
-        sequence.push(chosenInputIndex)
-        inputSprite.setImage(chosenInputImg)
+    for (let index = 0; index < sequence.length; index++) {
+        let currentInputIndex = sequence[index]
+        let currentInputImg = inputImgs[currentInputIndex]
+        inputSprite.setImage(currentInputImg)
         inputSprite.setFlag(SpriteFlag.Invisible, false)
         music.zapped.play()
         pause(500)
@@ -132,7 +134,6 @@ function beginNextRound () {
 }
 
 let playerTurn: boolean = false
-let sequenceSize: number = 1
 let currentSequenceIndex: number = 0
 let sequence: number[] = []
 
