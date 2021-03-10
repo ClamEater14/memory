@@ -91,7 +91,7 @@ function displayText(text: string, color: Colors = Colors.Grey) {
 }
 
 function addAndCheckPlayerInput (inputType: number) {
-	if (playerTurn == true) {
+    if (playerTurn == true) {
         let correctInput: number = sequence[currentSequenceIndex]
 
         inputSprite.setImage(inputImgs[inputType])
