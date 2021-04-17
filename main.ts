@@ -14,42 +14,42 @@ let inputImgs: Image[] = [
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.A.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.A)
+        checkPlayerInput(Button.A)
     } 
 })
 
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.B)
+        checkPlayerInput(Button.B)
     }   
 })
 
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Up)
+        checkPlayerInput(Button.Up)
     }  
 })
 
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.down.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Down)
+        checkPlayerInput(Button.Down)
     }
 })
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.left.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Left)
+        checkPlayerInput(Button.Left)
     }  
 })
 
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.right.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Right)
+        checkPlayerInput(Button.Right)
     }  
 })
 
@@ -61,7 +61,7 @@ function correct() {
     if (currentSequenceIndex == sequence.length) {
         playerTurn = false
         info.changeScoreBy(1)
-        displayText("Nice job!", Colors.Green)
+        displayText("Nice job!", Color.Green)
         music.magicWand.playUntilDone()
         pause(1000)
         beginNextRound()
@@ -70,10 +70,10 @@ function correct() {
 
 function wrong(correctInput: number) {
     playerTurn = false
-    displayText("Wrong!", Colors.Red)
+    displayText("Wrong!", Color.Red)
     music.buzzer.playUntilDone()
     pause(1000)
-    displayText("The correct one is...", Colors.Red)
+    displayText("The correct one is...", Color.Red)
     inputSprite.setImage(inputImgs[correctInput])
     pause(2000)
 
@@ -83,13 +83,13 @@ function wrong(correctInput: number) {
     game.over(info.score() >= info.highScore())
 }
 
-function displayText(text: string, color: Colors = Colors.Grey) {
+function displayText(text: string, color: Color = Color.Grey) {
     gameText.setText(text)
     gameText.setOutline(1, color)
     gameText.setPosition(80, 30)
 }
 
-function addAndCheckPlayerInput (inputType: number) {
+function checkPlayerInput(inputType: number) {
 	if (playerTurn == true) {
         let correctInput = sequence[currentSequenceIndex]
 
@@ -108,9 +108,8 @@ function beginNextRound () {
     inputSprite.setImage(assets.image`QuestionMark`)
     playerTurn = false
 
-    let chosenInputIndex: number = randint(0, inputImgs.length - 1)
-    let chosenInputImg: Image = inputImgs[chosenInputIndex]
-    sequence.push(chosenInputIndex)
+    let newButtonIndex: number = randint(0, inputImgs.length - 1)
+    sequence.push(newButtonIndex)
 
     displayText("Watch & remember!")
     pause(1000)
@@ -141,5 +140,5 @@ let gameText: TextSprite = textsprite.create("")
 let inputSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Prop)
 
 info.setScore(0)
-game.showLongText("Watch the pattern and memorize it!\nRepeat it using buttons!", DialogLayout.Full)
+game.showLongText("Watch the pattern and memorize it!\nRepeat it using Button!", DialogLayout.Full)
 beginNextRound() 
