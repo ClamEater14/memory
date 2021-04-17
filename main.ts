@@ -14,42 +14,42 @@ let inputImgs: Image[] = [
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.A.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.A)
+        checkPlayerInput(Button.A)
     } 
 })
 
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.B.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.B)
+        checkPlayerInput(Button.B)
     }   
 })
 
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Up)
+        checkPlayerInput(Button.Up)
     }  
 })
 
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.down.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Down)
+        checkPlayerInput(Button.Down)
     }
 })
 
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.left.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Left)
+        checkPlayerInput(Button.Left)
     }  
 })
 
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.right.isPressed())
     {
-        addAndCheckPlayerInput(Buttons.Right)
+        checkPlayerInput(Button.Right)
     }  
 })
 
@@ -61,7 +61,7 @@ function correct() {
     if (currentSequenceIndex == sequenceSize) {
         playerTurn = false
         info.changeScoreBy(1)
-        displayText("Nice job!", Colors.Green)
+        displayText("Nice job!", Color.Green)
         music.magicWand.playUntilDone()
         pause(1000)
         sequenceSize++
@@ -69,13 +69,13 @@ function correct() {
     }
 }
 
-function wrong(correctInput: number) {
+function wrong(correctButton: number) {
     playerTurn = false
-    displayText("Wrong!", Colors.Red)
+    displayText("Wrong!", Color.Red)
     music.buzzer.playUntilDone()
     pause(1000)
-    displayText("The correct one is...", Colors.Red)
-    inputSprite.setImage(inputImgs[correctInput])
+    displayText("The correct one is...", Color.Red)
+    inputSprite.setImage(inputImgs[correctButton])
     pause(2000)
 
     // If you break the record, you win!
@@ -84,27 +84,27 @@ function wrong(correctInput: number) {
     game.over(info.score() >= info.highScore())
 }
 
-function displayText(text: string, color: Colors = Colors.Grey) {
+function displayText(text: string, color: Color = Color.Grey) {
     gameText.setText(text)
     gameText.setOutline(1, color)
     gameText.setPosition(80, 30)
 }
 
-function addAndCheckPlayerInput (inputType: number) {
+function checkPlayerInput(button: number) {
     if (playerTurn == true) {
-        let correctInput: number = sequence[currentSequenceIndex]
+        let correctButton: number = sequence[currentSequenceIndex]
 
-        inputSprite.setImage(inputImgs[inputType])
-        if (inputType == correctInput) {
+        inputSprite.setImage(inputImgs[button])
+        if (button == correctButton) {
             correct()
         }
         else {
-            wrong(correctInput)
+            wrong(correctButton)
         }
     }
 }
 
-function beginNextRound () {
+function beginNextRound() {
     currentSequenceIndex = 0
     sequence = []
     inputSprite.setImage(assets.image`QuestionMark`)

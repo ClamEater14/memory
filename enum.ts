@@ -1,4 +1,4 @@
-enum Buttons
+enum Button
 {
     A = 0,
     B = 1,
@@ -8,7 +8,7 @@ enum Buttons
     Right = 5
 }
 
-enum Colors
+enum Color
 {
     Grey = 0,
     White = 1,
