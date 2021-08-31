@@ -1,5 +1,5 @@
 namespace SpriteKind {
-    export const Prop = SpriteKind.create()
+    export const Display = SpriteKind.create()
 }
 
 let inputImgs: Image[] = [
@@ -137,7 +137,7 @@ let currentSequenceIndex: number = 0
 let sequence: number[] = []
 
 let gameText: TextSprite = textsprite.create("")
-let inputSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Prop)
+let inputSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Display)
 
 info.setScore(0)
 game.showLongText("Watch the pattern and memorize it!\nRepeat it using buttons!", DialogLayout.Full)
