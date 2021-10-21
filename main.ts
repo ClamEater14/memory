@@ -11,6 +11,15 @@ let buttonImgs: Image[] = [
     assets.image`Right`
 ]
 
+let buttons: Button[] = [
+    Button.A,
+    Button.B,
+    Button.Up,
+    Button.Down,
+    Button.Left,
+    Button.Right
+]
+
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.A.isPressed()) {
         checkPlayerInput(Button.A)
@@ -102,7 +111,7 @@ function beginNextRound() {
     buttonSprite.setImage(assets.image`QuestionMark`)
     playerTurn = false
 
-    let newButtonIndex: number = randint(0, buttonImgs.length - 1)
+    let newButtonIndex: number = randint(0, buttons.length - 1)
     sequence.push(newButtonIndex)
 
     displayText("Watch & remember!")
