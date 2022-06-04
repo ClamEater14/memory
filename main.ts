@@ -1,5 +1,89 @@
 namespace SpriteKind {
-    export const Display = SpriteKind.create()
+    export const Prop = SpriteKind.create()
+}
+
+function displayText(text: string, color: Color = Color.None) {
+    gameText.setText(text)
+    gameText.setOutline(1, color)
+    gameText.setPosition(80, 30)
+}
+
+function checkPlayerInput(button: Button) {
+    if (playerTurn == true) {
+        let answer: Button = sequence[currentSequenceIndex]
+        buttonSprite.setImage(buttonImgs[button])
+
+        if (button == answer) {
+            // Correct
+            correct()
+        }
+        else {
+            // Wrong
+            wrong(answer)
+        }
+    }
+}
+
+function correct() {
+    currentSequenceIndex++
+    music.baDing.play()
+    if (currentSequenceIndex == sequence.length) {
+        playerTurn = false
+        info.changeScoreBy(1)
+        displayText("Nice job!", Color.Green)
+        music.magicWand.playUntilDone()
+        pause(1000)
+        beginNextRound()
+    }
+}
+
+function wrong(correctButton: Button) {
+    playerTurn = false
+    displayText("Wrong!", Color.Red)
+    music.buzzer.play()
+    pause(1000)
+    displayText("The correct one is...", Color.Red)
+    buttonSprite.setImage(buttonImgs[correctButton])
+    pause(2000)
+
+    game.over(info.score() >= info.highScore())
+}
+
+function beginNextRound() {
+    sequenceSize++
+    currentSequenceIndex = 0
+    sequence = []
+    buttonSprite.setImage(assets.image`QuestionMark`)
+
+    let newButtonIndex: number = randint(0, buttons.length - 1)
+
+    playerTurn = false
+    displayText("Watch and remember!")
+    pause(1000)
+
+    for (let index = 0; index < sequenceSize; index++) {
+        let newButtonIndex: number = randint(0, buttons.length - 1)
+        let newButtonImg: Image = buttonImgs[newButtonIndex]
+        sequence.push(newButtonIndex)
+        buttonSprite.setImage(newButtonImg)
+        buttonSprite.setFlag(SpriteFlag.Invisible, false)
+        music.zapped.play()
+        pause(500)
+        buttonSprite.setFlag(SpriteFlag.Invisible, true)
+        pause(250)
+    }
+
+    pause(500)
+    buttonSprite.setFlag(SpriteFlag.Invisible, false)
+    displayText("Repeat the pattern!")
+    buttonSprite.setImage(assets.image`QuestionMark`)
+    playerTurn = true
+}
+
+function connectButton(controllerButton: controller.Button, inputButton: Button) {
+    controllerButton.onEvent(ControllerButtonEvent.Pressed, function () {
+        checkPlayerInput(inputButton)
+    })
 }
 
 let buttonImgs: Image[] = [
@@ -20,129 +104,20 @@ let buttons: Button[] = [
     Button.Right
 ]
 
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.A.isPressed()) {
-        checkPlayerInput(Button.A)
-    }
-})
-
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.B.isPressed()) {
-        checkPlayerInput(Button.B)
-    }
-})
-
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.up.isPressed()) {
-        checkPlayerInput(Button.Up)
-    }
-})
-
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.down.isPressed()) {
-        checkPlayerInput(Button.Down)
-    }
-})
-
-controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.left.isPressed()) {
-        checkPlayerInput(Button.Left)
-    }
-})
-
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.right.isPressed()) {
-        checkPlayerInput(Button.Right)
-    }
-})
-
-function correct() {
-    music.baDing.play()
-    currentSequenceIndex++
-
-    // if you have reached to the end of the sequence, switch to the next round
-    if (currentSequenceIndex == sequence.length) {
-        playerTurn = false
-        info.changeScoreBy(1)
-        displayText("Nice job!", Color.Green)
-        music.magicWand.playUntilDone()
-        pause(1000)
-        beginNextRound()
-    }
-}
-
-function wrong(correctButton: number) {
-    playerTurn = false
-    displayText("Wrong!", Color.Red)
-    music.buzzer.playUntilDone()
-    pause(1000)
-    displayText("The correct one is...", Color.Red)
-    buttonSprite.setImage(buttonImgs[correctButton])
-    pause(2000)
-
-    // If you break the record, you win!
-    // Otherwise, you lose!
-    // You can do this with an "if" statement as well.
-    game.over(info.score() >= info.highScore())
-}
-
-function displayText(text: string, color: Color = Color.Grey) {
-    gameText.setText(text)
-    gameText.setOutline(1, color)
-    gameText.setPosition(80, 30)
-}
-
-function checkPlayerInput(button: number) {
-    if (playerTurn == true) {
-        let correctButton = sequence[currentSequenceIndex]
-
-        buttonSprite.setImage(buttonImgs[button])
-        if (button == correctButton) {
-            correct()
-        }
-        else {
-            wrong(correctButton)
-        }
-    }
-}
-
-function beginNextRound() {
-    sequenceSize++
-    currentSequenceIndex = 0
-    sequence = []
-    
-    playerTurn = false
-
-    buttonSprite.setImage(assets.image`QuestionMark`)
-    displayText("Watch & remember!")
-    pause(1000)
-
-    for (let index = 0; index < sequenceSize; index++) {
-        let chosenButtonIndex: number = randint(0, buttons.length - 1)
-        let chosenButtonImg: Image = buttonImgs[chosenButtonIndex]
-        sequence.push(chosenButtonIndex)
-        buttonSprite.setImage(chosenButtonImg)
-        buttonSprite.setFlag(SpriteFlag.Invisible, false)
-        music.zapped.play()
-        pause(500)
-        buttonSprite.setFlag(SpriteFlag.Invisible, true)
-        pause(250)
-    }
-
-    pause(500)
-    buttonSprite.setFlag(SpriteFlag.Invisible, false)
-    displayText("Repeat the pattern!")
-    buttonSprite.setImage(assets.image`QuestionMark`)
-    playerTurn = true
-}
-
 let playerTurn: boolean = false
 let sequenceSize: number = 0
 let currentSequenceIndex: number = 0
-let sequence: number[] = []
+let sequence: Button[] = []
 
 let gameText: TextSprite = textsprite.create("")
-let buttonSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Display)
+let buttonSprite: Sprite = sprites.create(assets.image`QuestionMark`, SpriteKind.Prop)
+
+connectButton(controller.A, Button.A)
+connectButton(controller.B, Button.B)
+connectButton(controller.up, Button.Up)
+connectButton(controller.down, Button.Down)
+connectButton(controller.left, Button.Left)
+connectButton(controller.right, Button.Right)
 
 info.setScore(0)
 game.showLongText("Watch the pattern and memorize it!\nRepeat it using buttons!", DialogLayout.Full)
