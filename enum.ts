@@ -10,7 +10,7 @@ enum Button
 
 enum Color
 {
-    Grey = 0,
+    None = 0,
     White = 1,
     Red = 2,
     Pink = 3,
