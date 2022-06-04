@@ -46,15 +46,18 @@ function wrong(correctButton: Button) {
     buttonSprite.setImage(buttonImgs[correctButton])
     pause(2000)
 
-    game.over(info.score() >= info.highScore())
+    info.changeLifeBy(-1)
+    beginNextRound(false)
 }
 
-function beginNextRound() {
+function beginNextRound(newButton: boolean = true) {
     currentSequenceIndex = 0
     buttonSprite.setImage(assets.image`QuestionMark`)
 
-    let newButtonIndex: number = randint(0, buttons.length - 1)
-    sequence.push(buttons[newButtonIndex])
+    if (newButton) {
+        let newButtonIndex: number = randint(0, buttons.length - 1)
+        sequence.push(buttons[newButtonIndex])
+    }
 
     playerTurn = false
     displayText("Watch and remember!")
@@ -80,9 +83,15 @@ function beginNextRound() {
 
 function connectButton(controllerButton: controller.Button, inputButton: Button) {
     controllerButton.onEvent(ControllerButtonEvent.Pressed, function () {
-        checkPlayerInput(inputButton)
+        if (controllerButton.isPressed()) {
+            checkPlayerInput(inputButton)
+        }
     })
 }
+
+info.onLifeZero(function() {
+    game.over(info.score() >= info.highScore())
+})
 
 let buttonImgs: Image[] = [
     assets.image`A`,
@@ -117,5 +126,6 @@ connectButton(controller.left, Button.Left)
 connectButton(controller.right, Button.Right)
 
 info.setScore(0)
+info.setLife(3)
 game.showLongText("Watch the pattern and memorize it!\nRepeat it using buttons!", DialogLayout.Full)
 beginNextRound()
