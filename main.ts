@@ -80,7 +80,9 @@ function beginNextRound() {
 
 function connectButton(controllerButton: controller.Button, inputButton: Button) {
     controllerButton.onEvent(ControllerButtonEvent.Pressed, function () {
-        checkPlayerInput(inputButton)
+        if (controllerButton.isPressed()) {
+            checkPlayerInput(inputButton)
+        }
     })
 }
 
