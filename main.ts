@@ -55,15 +55,13 @@ function beginNextRound() {
     sequence = []
     buttonSprite.setImage(assets.image`QuestionMark`)
 
-    let newButtonIndex: number = randint(0, buttons.length - 1)
-
     playerTurn = false
     displayText("Watch and remember!")
     pause(1000)
 
     for (let index = 0; index < sequenceSize; index++) {
-        let newButtonIndex: number = randint(0, buttons.length - 1)
-        let newButtonImg: Image = buttonImgs[newButtonIndex]
+        let newButtonIndex = randint(0, buttons.length - 1)
+        let newButtonImg = buttonImgs[newButtonIndex]
         sequence.push(newButtonIndex)
         buttonSprite.setImage(newButtonImg)
         buttonSprite.setFlag(SpriteFlag.Invisible, false)
